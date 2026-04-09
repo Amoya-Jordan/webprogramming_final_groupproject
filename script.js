@@ -1,11 +1,11 @@
 // Auriva Essential Oils — External JavaScript
-// Module: CIT2011 Web Programming |
-// Members: Amoya Jordan - 2302539, Antwone Lamont,Kyle Walker , Victoria
+// Module: CIT2011 Web Programming | Final Group Project
+// Members: Amoya Jordan - 2302539, Antwone Lamont -,Kyle Walker - , Victoria Wilson -
 
 
-// =============================================================================
+
 // CART — localStorage persistence across pages
-// =============================================================================
+
 
 // Question 2. Load the cart array from localStorage so data persists across pages
 // Use JSON.parse() to convert the stored string back into a JavaScript array
@@ -162,10 +162,9 @@ function showToast(message) {
   }, 2500);
 }
 
-// =============================================================================
 // Question 1. User Authentication — Registration and Login using localStorage
 // All user records are stored under the key "RegistrationData" as an array of objects
-// =============================================================================
+
 
 // Question 1a(vi). Retrieve the RegistrationData array from localStorage
 // Returns a parsed JavaScript array of user objects, or an empty array if none exist
@@ -254,10 +253,10 @@ function resetPassword() {
   }
 }
 
-// =============================================================================
+
 // Question 2b. Event Handling — DOMContentLoaded listener
 // Attach all form submit handlers after the page has fully loaded
-// =============================================================================
+
 document.addEventListener("DOMContentLoaded", function() {
 
   if (document.getElementById("cart-items")) {
@@ -462,9 +461,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
-// =============================================================================
+
 // Question 2c. Validation Helpers — shared functions used across all forms
-// =============================================================================
+
 
 // Question 2c. showError — inject a red error message below a form field and highlight its border
 // Takes the field's id and a message string; appends a .error-msg span inside the field's parent
