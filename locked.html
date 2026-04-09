@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Locked &mdash; Auriva</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">AURI<span>VA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Q1b.iii: Error / Account Locked page — shown after 3 failed login attempts -->
+  <section class="form-section" style="text-align:center;">
+
+    <div style="margin-bottom:1.5rem;">
+      <!-- Lock icon using pure CSS/HTML — no image required -->
+      <div style="width:64px;height:64px;border-radius:50%;
+                  background:var(--warm-white);border:2px solid var(--gold);
+                  display:flex;align-items:center;justify-content:center;
+                  margin:0 auto 1.5rem;font-size:1.8rem;">
+        &#128274;
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:0.5rem;">Account Locked</h2>
+    <p class="form-subtitle">Too many failed login attempts</p>
+
+    <div style="background:var(--warm-white);border:1px solid var(--border);
+                border-radius:4px;padding:2rem;margin-bottom:2rem;">
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem;">
+        You have exceeded the maximum number of login attempts (3).
+        For security, access to this account has been temporarily restricted.
+      </p>
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">
+        Please use the <strong style="color:var(--dark-green);">Reset Password</strong>
+        option on the login page to regain access, or contact support.
+      </p>
+    </div>
+
+    <div class="form-actions" style="justify-content:center;">
+      <!-- Clicking Try Again clears the session attempt counter -->
+      <a href="login.html" class="btn" onclick="sessionStorage.removeItem('loginAttempts');">
+        Try Again
+      </a>
+      <a href="index.html" class="btn btn-outline">Go Home</a>
+    </div>
+
+  </section>
+
+  <footer>
+    <p>&copy; 2026 <span>Auriva</span> Essential Oils &nbsp;&middot;&nbsp; Pure. Natural. Yours.</p>
+  </footer>
+
+</body>
+</html>

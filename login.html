@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login &mdash; Auriva</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">AURI<span>VA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Q1b: Login Page — TRN + password, 3 attempts, Cancel, Reset Password -->
+  <section class="form-section">
+    <h2>Welcome Back</h2>
+    <p class="form-subtitle">Sign in to your Auriva account</p>
+
+    <form id="login-form" novalidate>
+
+      <!-- Q1b.i: TRN used instead of username -->
+      <div class="form-group">
+        <label for="login-trn">Tax Registration Number (TRN)</label>
+        <input type="text" id="login-trn" name="login-trn" placeholder="000-000-000" maxlength="11" required>
+      </div>
+
+      <!-- Q1b.i: Password -->
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="login-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+      </div>
+
+      <!-- Q1b.iii: Attempt counter displayed here by JS -->
+      <p id="attempt-msg" style="color:#c0392b;font-size:0.78rem;text-align:center;margin-bottom:0.5rem;min-height:1.2rem;"></p>
+
+      <!-- Q1b.iv / Q1b.v: Login & Cancel buttons -->
+      <div class="form-actions">
+        <!-- Q1b.iv: Login — validates against RegistrationData in localStorage -->
+        <button type="submit" class="btn">Sign In</button>
+        <!-- Q1b.v: Cancel — clears form fields -->
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('login-form').reset(); clearErrors(); document.getElementById('attempt-msg').textContent='';">Cancel</button>
+      </div>
+
+      <!-- Q1b.vi: Reset Password hyperlink -->
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.8rem;color:var(--text-muted);">
+        Forgot your password?
+        <a href="#" id="reset-password-link" style="color:var(--gold);text-decoration:none;">Reset Password</a>
+      </p>
+
+      <!-- Reset Password inline panel — shown/hidden by JS -->
+      <div id="reset-panel" style="display:none;margin-top:1.5rem;background:var(--warm-white);
+           border:1px solid var(--border);border-radius:4px;padding:1.5rem;">
+        <p style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+                  color:var(--text-muted);margin-bottom:1rem;">Reset Password</p>
+
+        <div class="form-group">
+          <label for="reset-trn">Your TRN</label>
+          <input type="text" id="reset-trn" placeholder="000-000-000" maxlength="11">
+        </div>
+
+        <div class="form-group">
+          <label for="reset-newpass">New Password</label>
+          <input type="password" id="reset-newpass" placeholder="Min. 8 characters">
+        </div>
+
+        <div class="form-actions" style="margin-top:1rem;">
+          <button type="button" class="btn" onclick="resetPassword()">Update Password</button>
+          <button type="button" class="btn btn-outline"
+            onclick="document.getElementById('reset-panel').style.display='none';">Cancel</button>
+        </div>
+      </div>
+
+      <p style="text-align:center;margin-top:1rem;font-size:0.8rem;color:var(--text-muted);">
+        New here? <a href="register.html" style="color:var(--gold);text-decoration:none;">Create an account</a>
+      </p>
+
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 <span>Auriva</span> Essential Oils &nbsp;&middot;&nbsp; Pure. Natural. Yours.</p>
+  </footer>
+
+</body>
+</html>

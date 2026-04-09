@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register &mdash; Auriva</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">AURI<span>VA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Q1a: Registration Page — collects all required user fields -->
+  <section class="form-section" style="max-width:640px;">
+    <h2>Create Account</h2>
+    <p class="form-subtitle">Join the Auriva community</p>
+
+    <!-- Q1a.ii: novalidate — JS handles all validation via script.js -->
+    <form id="register-form" novalidate>
+
+      <!-- Q1a.i: First Name -->
+      <div class="form-group">
+        <label for="reg-firstname">First Name</label>
+        <input type="text" id="reg-firstname" name="reg-firstname" placeholder="Jane" required>
+      </div>
+
+      <!-- Q1a.i: Last Name -->
+      <div class="form-group">
+        <label for="reg-lastname">Last Name</label>
+        <input type="text" id="reg-lastname" name="reg-lastname" placeholder="Smith" required>
+      </div>
+
+      <!-- Q1a.i / Q1a.iv: Date of Birth — age 18+ calculated in script.js -->
+      <div class="form-group">
+        <label for="reg-dob">Date of Birth</label>
+        <input type="date" id="reg-dob" name="reg-dob" required>
+      </div>
+
+      <!-- Q1a.i: Gender -->
+      <div class="form-group">
+        <label for="reg-gender">Gender</label>
+        <select id="reg-gender" name="reg-gender" required
+          style="width:100%;padding:0.9rem 1rem;border:1px solid var(--border);
+                 border-radius:2px;background:var(--warm-white);
+                 font-family:var(--font-sans);font-size:0.9rem;
+                 color:var(--dark-green);outline:none;">
+          <option value="">— Select —</option>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Q1a.i: Phone Number -->
+      <div class="form-group">
+        <label for="reg-phone">Phone Number</label>
+        <input type="tel" id="reg-phone" name="reg-phone" placeholder="876-000-0000" required>
+      </div>
+
+      <!-- Q1a.i: Email -->
+      <div class="form-group">
+        <label for="reg-email">Email Address</label>
+        <input type="email" id="reg-email" name="reg-email" placeholder="jane@example.com" required>
+      </div>
+
+      <!-- Q1a.i / Q1a.v: TRN — must be unique, format 000-000-000 -->
+      <div class="form-group">
+        <label for="reg-trn">Tax Registration Number (TRN)</label>
+        <input type="text" id="reg-trn" name="reg-trn" placeholder="000-000-000" maxlength="11" required>
+        <small style="color:var(--text-muted);font-size:0.72rem;margin-top:0.3rem;display:block;">
+          Format: 000-000-000 &nbsp;&middot;&nbsp; Used to log in
+        </small>
+      </div>
+
+      <!-- Q1a.i / Q1a.iii: Password — min 8 characters validated in script.js -->
+      <div class="form-group">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" name="reg-password" placeholder="Min. 8 characters" required>
+      </div>
+
+      <!-- Q1a.vii / Q1a.viii: Register & Cancel buttons -->
+      <div class="form-actions">
+        <!-- Q1a.vii: Register — stores data to localStorage -->
+        <button type="submit" class="btn" id="register-btn">Register</button>
+        <!-- Q1a.viii: Cancel — clears all form fields -->
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('register-form').reset(); clearErrors();">Cancel</button>
+      </div>
+
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.8rem;color:var(--text-muted);">
+        Already have an account? <a href="login.html" style="color:var(--gold);text-decoration:none;">Sign In</a>
+      </p>
+
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 <span>Auriva</span> Essential Oils &nbsp;&middot;&nbsp; Pure. Natural. Yours.</p>
+  </footer>
+
+</body>
+</html>
