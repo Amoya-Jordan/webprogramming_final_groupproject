@@ -1,48 +1,48 @@
 // Auriva Essential Oils — External JavaScript
 // Module: CIT2011 Web Programming | Final Group Project
-// Members: Amoya Jordan - 2302539, Antwone Lamont - 2406412,Kyle Walker - 2403246, Victoria Wilson -2207197
- 
- 
- 
+// Members: Amoya Jordan - 2302539, Antwone Lamont -,Kyle Walker - 2403246, Victoria Wilson -2207197
+
+
+
 // CART — localStorage persistence across pages
- 
+
 // Question 2. Load the cart array from localStorage so data persists across pages
 // Use JSON.parse() to convert the stored string back into a JavaScript array
 var cart = JSON.parse(localStorage.getItem("auriva_cart")) || [];
- 
+
 // Question 2. Save the cart array to localStorage after every change
 // Use JSON.stringify() to convert the array into a string for storage
 function saveCart() {
   localStorage.setItem("auriva_cart", JSON.stringify(cart));
 }
- 
+
 // Question 2a. DOM Manipulation — add a product to the cart array and update the display
 // Check if the item already exists in the cart; if so increment qty, otherwise push a new object
 function addToCart(productName, price, image, isBundle) {
   if (isBundle === undefined) { isBundle = false; }
- 
+
   var existing = null;
   for (var i = 0; i < cart.length; i++) {
     if (cart[i].name === productName) { existing = cart[i]; break; }
   }
- 
+
   if (existing) {
     existing.qty++; // Arithmetic — increment quantity
   } else {
     cart.push({ name: productName, price: price, qty: 1, image: image, isBundle: isBundle });
   }
- 
+
   saveCart();
   updateCart();
   showToast(productName + " added to cart!");
 }
- 
+
 // Question 2a. DOM Manipulation — dynamically rebuild the cart display and recalculate totals
 // Loop through the cart array, build HTML for each item, then inject it into #cart-items
 function updateCart() {
   var cartDiv = document.getElementById("cart-items"); // getElementById — DOM access
   if (!cartDiv) return;
- 
+
   if (cart.length === 0) { // Control structure — empty cart state
     cartDiv.innerHTML =
       '<div class="empty-cart">' +
@@ -52,16 +52,16 @@ function updateCart() {
     resetSummary();
     return;
   }
- 
+
   cartDiv.innerHTML = "";
   var subtotal = 0;
- 
+
   for (var i = 0; i < cart.length; i++) { // Loop through cart items
     var item = cart[i];
     var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — 10% bundle discount
     var itemTotal = itemPrice * item.qty;
     subtotal += itemTotal;
- 
+
     var div = document.createElement("div"); // DOM manipulation — create and inject cart item
     div.className = "cart-item";
     div.innerHTML =
@@ -82,10 +82,10 @@ function updateCart() {
       '</div>';
     cartDiv.appendChild(div);
   }
- 
+
   var tax   = subtotal * 0.15; // Arithmetic — calculate 15% tax
   var total = subtotal + tax;  // Arithmetic — grand total
- 
+
   var sub   = document.getElementById("cart-subtotal"); // DOM manipulation — update summary
   var taxEl = document.getElementById("cart-tax");
   var totEl = document.getElementById("cart-total");
@@ -93,7 +93,7 @@ function updateCart() {
   if (taxEl) taxEl.innerText = "Tax (15%): JMD $" + tax.toFixed(0);
   if (totEl) totEl.innerText = "Grand Total: JMD $" + total.toFixed(0);
 }
- 
+
 // Question 2a. DOM Manipulation — reset the order summary fields back to zero
 // Called when the cart is empty to clear subtotal, tax, and total display
 function resetSummary() {
@@ -104,7 +104,7 @@ function resetSummary() {
   if (taxEl) taxEl.innerText = "Tax (15%): JMD $0";
   if (totEl) totEl.innerText = "Grand Total: JMD $0";
 }
- 
+
 // Question 2d. Arithmetic — increase the quantity of a cart item by 1
 // Update localStorage and refresh the cart display after the change
 function increaseQty(index) {
@@ -112,7 +112,7 @@ function increaseQty(index) {
   saveCart();
   updateCart();
 }
- 
+
 // Question 2d. Arithmetic — decrease quantity by 1, or remove item if qty reaches 0
 // Uses splice() to remove the item from the array entirely when qty would fall below 1
 function decreaseQty(index) {
@@ -124,7 +124,7 @@ function decreaseQty(index) {
   saveCart();
   updateCart();
 }
- 
+
 // Question 2d. Array Manipulation — remove a specific item from the cart by its index
 // Uses splice() to delete the element, then saves and refreshes the display
 function removeItem(index) {
@@ -132,7 +132,7 @@ function removeItem(index) {
   saveCart();
   updateCart();
 }
- 
+
 // Question 2b. Event Handling — clear all items from the cart when Clear Cart button is clicked
 // Resets the cart array to empty, updates localStorage, and refreshes the display
 function clearCart() {
@@ -140,7 +140,7 @@ function clearCart() {
   saveCart();
   updateCart();
 }
- 
+
 // Question 2a. DOM Manipulation — create and display a temporary toast notification on screen
 // Appends a styled div to the body, then fades it out and removes it after 2.5 seconds
 function showToast(message) {
@@ -160,23 +160,23 @@ function showToast(message) {
     setTimeout(function() { toast.remove(); }, 400);
   }, 2500);
 }
- 
+
 // Question 1. User Authentication — Registration and Login using localStorage
 // All user records are stored under the key "RegistrationData" as an array of objects
- 
- 
+
+
 // Question 1a(vi). Retrieve the RegistrationData array from localStorage
 // Returns a parsed JavaScript array of user objects, or an empty array if none exist
 function getRegistrationData() {
   return JSON.parse(localStorage.getItem("RegistrationData")) || [];
 }
- 
+
 // Question 1a(vi). Write the updated RegistrationData array back to localStorage
 // Uses JSON.stringify() to convert the array of objects into a storable string
 function saveRegistrationData(data) {
   localStorage.setItem("RegistrationData", JSON.stringify(data));
 }
- 
+
 // Question 1a(iv). Calculate the user's age in full years from their date of birth
 // Returns a number used to enforce the rule that visitors must be over 18 to register
 function calculateAge(dob) {
@@ -189,13 +189,13 @@ function calculateAge(dob) {
   }
   return age;
 }
- 
+
 // Question 1a(v). Validate that the TRN matches the required format 000-000-000
 // Returns true if the string is exactly 9 digits split by two hyphens, false otherwise
 function isValidTRN(trn) {
   return /^\d{3}-\d{3}-\d{3}$/.test(trn);
 }
- 
+
 // Question 1a(v). Check that no existing user in RegistrationData has the same TRN
 // Returns true if the TRN is unique (not already registered), false if a duplicate is found
 function isTRNUnique(trn) {
@@ -205,7 +205,7 @@ function isTRNUnique(trn) {
   }
   return true;
 }
- 
+
 // Question 1b(ii). Search RegistrationData for a user whose TRN matches the given value
 // Returns the matching user object if found, or null if no match exists
 function findUserByTRN(trn) {
@@ -215,13 +215,13 @@ function findUserByTRN(trn) {
   }
   return null;
 }
- 
+
 // Question 1b(vi). Allow the user to change their password by matching their TRN
 // Finds the user record in RegistrationData, updates the password field, and saves back to localStorage
 function resetPassword() {
   var trn     = document.getElementById("reset-trn").value.trim();
   var newPass = document.getElementById("reset-newpass").value.trim();
- 
+
   if (!isValidTRN(trn)) {
     showToast("Please enter a valid TRN (000-000-000).");
     return;
@@ -230,7 +230,7 @@ function resetPassword() {
     showToast("New password must be at least 8 characters.");
     return;
   }
- 
+
   var users = getRegistrationData();
   var found = false;
   for (var i = 0; i < users.length; i++) {
@@ -240,7 +240,7 @@ function resetPassword() {
       break;
     }
   }
- 
+
   if (found) {
     saveRegistrationData(users); // Write updated array back to localStorage
     document.getElementById("reset-panel").style.display = "none";
@@ -251,30 +251,30 @@ function resetPassword() {
     showToast("No account found with that TRN.");
   }
 }
- 
+
 // ─── ADDED FROM DOCUMENT 2 ────────────────────────────────────────────────────
- 
+
 // Question 4c. Checkout — display a read-only summary of the cart before the user confirms
 // Renders each item without quantity controls so the user can review before confirming
 function displayCartSummary() {
   var cartDiv = document.getElementById("cart-items");
   if (!cartDiv) return;
- 
+
   if (cart.length === 0) { // Control structure — empty cart state
     cartDiv.innerHTML = '<p>Your cart is empty. <a href="product.html">Continue Shopping</a></p>';
     resetSummary();
     return;
   }
- 
+
   cartDiv.innerHTML = "";
   var subtotal = 0;
- 
+
   for (var i = 0; i < cart.length; i++) { // Loop through cart items
     var item      = cart[i];
     var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — 10% bundle discount
     var itemTotal = itemPrice * item.qty;
     subtotal += itemTotal;
- 
+
     var div = document.createElement("div"); // DOM manipulation — create read-only summary row
     div.className = "cart-item";
     div.innerHTML =
@@ -289,10 +289,10 @@ function displayCartSummary() {
       '</div>';
     cartDiv.appendChild(div);
   }
- 
+
   var tax   = subtotal * 0.15; // Arithmetic — calculate 15% tax
   var total = subtotal + tax;  // Arithmetic — grand total
- 
+
   var sub   = document.getElementById("cart-subtotal"); // DOM manipulation — update summary
   var taxEl = document.getElementById("cart-tax");
   var totEl = document.getElementById("cart-total");
@@ -300,7 +300,7 @@ function displayCartSummary() {
   if (taxEl) taxEl.innerText = "Tax (15%): JMD $" + tax.toFixed(0);
   if (totEl) totEl.innerText = "Grand Total: JMD $" + total.toFixed(0);
 }
- 
+
 // Question 5. Invoice Generation — build the invoice HTML and save it to localStorage
 // Appends the invoice to AllInvoices and to the logged-in user's invoices[] in RegistrationData
 function generateInvoice(name, address, phone, amount) {
@@ -308,13 +308,13 @@ function generateInvoice(name, address, phone, amount) {
   var subtotal   = 0;
   var itemsHtml  = "";
   var itemsData  = [];
- 
+
   for (var i = 0; i < cart.length; i++) { // Loop through cart to build line items
     var item      = cart[i];
     var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — bundle discount
     var itemTotal = itemPrice * item.qty;
     subtotal += itemTotal;
- 
+
     itemsHtml +=
       '<tr>' +
         '<td>' + item.name + '</td>' +
@@ -322,16 +322,16 @@ function generateInvoice(name, address, phone, amount) {
         '<td>JMD $' + itemPrice.toFixed(0) + '</td>' +
         '<td>JMD $' + itemTotal.toFixed(0) + '</td>' +
       '</tr>';
- 
+
     itemsData.push({ name: item.name, qty: item.qty, price: itemPrice, total: itemTotal, isBundle: item.isBundle });
   }
- 
+
   var tax         = subtotal * 0.15; // Arithmetic — 15% tax
   var total       = subtotal + tax;  // Arithmetic — grand total
   var invoiceNum  = "INV-" + Date.now(); // Unique invoice number using timestamp
   var invoiceDate = new Date().toLocaleDateString();
   var loggedInTRN = localStorage.getItem("loggedInTRN") || "N/A";
- 
+
   // Question 5a. DOM Manipulation — inject full invoice HTML into #invoice-content
   if (invoiceDiv) {
     invoiceDiv.innerHTML =
@@ -353,7 +353,7 @@ function generateInvoice(name, address, phone, amount) {
       '</table>' +
       '<p style="margin-top:1rem;">Thank you for your purchase! A receipt has been sent to your email.</p>';
   }
- 
+
   // Question 5b. Build invoice object and save to AllInvoices in localStorage
   var invoiceObj = {
     invoiceNumber : invoiceNum,
@@ -368,11 +368,11 @@ function generateInvoice(name, address, phone, amount) {
     tax           : tax,
     total         : total
   };
- 
+
   var allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
   allInvoices.push(invoiceObj);
   localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
- 
+
   // Also append to the logged-in user's invoices[] inside RegistrationData
   var users = getRegistrationData();
   for (var j = 0; j < users.length; j++) {
@@ -384,7 +384,7 @@ function generateInvoice(name, address, phone, amount) {
   }
   saveRegistrationData(users);
 }
- 
+
 // Question 6b. ShowInvoices() — log all invoices from AllInvoices to the console
 // Pass a TRN string to filter by user, or pass "" to show every invoice
 function ShowInvoices(filterTRN) {
@@ -401,7 +401,7 @@ function ShowInvoices(filterTRN) {
     console.log(filtered);
   }
 }
- 
+
 // Question 6c. GetUserInvoices() — display all invoices for a specific user by TRN
 // Reads the invoices[] array stored on the user object inside RegistrationData
 function GetUserInvoices(trn) {
@@ -413,7 +413,7 @@ function GetUserInvoices(trn) {
   console.log("=== Invoices for " + user.firstName + " " + user.lastName + " ===");
   console.log(user.invoices || []);
 }
- 
+
 // Question 6a. ShowUserFrequency() — render gender and age-group bar charts on the dashboard
 // Reads RegistrationData, counts users per category, then injects bar chart HTML using stretched images
 function ShowUserFrequency() {
@@ -421,21 +421,21 @@ function ShowUserFrequency() {
   var genderDiv = document.getElementById("gender-chart");
   var ageDiv    = document.getElementById("age-chart");
   if (!genderDiv && !ageDiv) { return; } // Only runs on the dashboard page
- 
+
   // Count gender frequencies
   var genderCounts = { Male: 0, Female: 0, Other: 0 };
   // Count age-group frequencies
   var ageCounts = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
- 
+
   for (var i = 0; i < users.length; i++) { // Loop through all registered users
     var u = users[i];
- 
+
     // Gender tally
     var g = (u.gender || "").toLowerCase();
     if      (g === "male")   { genderCounts.Male++;   }
     else if (g === "female") { genderCounts.Female++; }
     else                     { genderCounts.Other++;  }
- 
+
     // Age-group tally — arithmetic and control structure
     var age = calculateAge(u.dateOfBirth);
     if      (age >= 18 && age <= 25) { ageCounts["18-25"]++; }
@@ -443,7 +443,7 @@ function ShowUserFrequency() {
     else if (age >= 36 && age <= 50) { ageCounts["36-50"]++; }
     else if (age >  50)              { ageCounts["50+"]++;   }
   }
- 
+
   // Helper — build one bar using a stretched thinbar image (as shown in assignment spec)
   function buildBar(label, count, max) {
     var BAR_MAX_PX = 300;
@@ -456,7 +456,7 @@ function ShowUserFrequency() {
       '</div>'
     );
   }
- 
+
   // Render gender chart into #gender-chart
   if (genderDiv) {
     var maxGender = Math.max(genderCounts.Male, genderCounts.Female, genderCounts.Other, 1);
@@ -466,7 +466,7 @@ function ShowUserFrequency() {
     gHtml += buildBar("Other",  genderCounts.Other,  maxGender);
     genderDiv.innerHTML = gHtml;
   }
- 
+
   // Render age-group chart into #age-chart
   if (ageDiv) {
     var maxAge = Math.max(ageCounts["18-25"], ageCounts["26-35"], ageCounts["36-50"], ageCounts["50+"], 1);
@@ -478,15 +478,15 @@ function ShowUserFrequency() {
     ageDiv.innerHTML = aHtml;
   }
 }
- 
+
 // ─────────────────────────────────────────────────────────────────────────────
- 
- 
+
+
 // Question 2b. Event Handling — DOMContentLoaded listener
 // Attach all form submit handlers after the page has fully loaded
- 
+
 document.addEventListener("DOMContentLoaded", function() {
- 
+
   // Initialise cart: read-only summary on checkout page, full interactive cart elsewhere
   if (document.getElementById("cart-items")) {
     if (document.getElementById("checkout-form")) {
@@ -495,18 +495,18 @@ document.addEventListener("DOMContentLoaded", function() {
       updateCart(); // Initialise cart display on cart page
     }
   }
- 
+
   // Run frequency charts if dashboard elements are present (exits silently on all other pages)
   ShowUserFrequency();
- 
+
   // Question 1b. Login Page — validate TRN and password against RegistrationData in localStorage
   // Give the visitor 3 attempts; redirect to locked.html if all attempts are exhausted
   var loginForm = document.getElementById("login-form");
   if (loginForm) {
- 
+
     var loginAttempts = parseInt(sessionStorage.getItem("loginAttempts")) || 0;
     var MAX_ATTEMPTS  = 3;
- 
+
     // Question 1b(vi). Show or hide the Reset Password panel when the link is clicked
     // Toggle the display property of #reset-panel between block and none
     var resetLink = document.getElementById("reset-password-link");
@@ -517,32 +517,32 @@ document.addEventListener("DOMContentLoaded", function() {
         panel.style.display = (panel.style.display === "none") ? "block" : "none";
       });
     }
- 
+
     // Question 1b(ii). Validate the entered TRN and password against RegistrationData
     // Count failed attempts and redirect to locked.html after the third failed attempt
     loginForm.addEventListener("submit", function(e) {
       e.preventDefault();
       clearErrors();
- 
+
       if (loginAttempts >= MAX_ATTEMPTS) { // Q1b(iii) — block if already locked
         window.location.href = "locked.html";
         return;
       }
- 
+
       var trn      = document.getElementById("login-trn").value.trim();
       var password = document.getElementById("login-password").value.trim();
       var valid    = true;
- 
+
       if (trn === "")            { showError("login-trn",      "TRN is required.");          valid = false; }
       else if (!isValidTRN(trn)) { showError("login-trn",      "Enter TRN as 000-000-000."); valid = false; }
       if (password === "")       { showError("login-password", "Password is required.");     valid = false; }
- 
+
       if (!valid) return;
- 
+
       var user         = findUserByTRN(trn); // Q1b(ii) — look up user in RegistrationData
       var attemptMsgEl = document.getElementById("attempt-msg");
       var remaining;
- 
+
       if (user && user.password === password) {
         sessionStorage.removeItem("loginAttempts");  // Reset attempt counter on success
         localStorage.setItem("loggedInTRN", trn);    // Store logged-in session
@@ -550,12 +550,12 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(function() {
           window.location.href = "product.html";      // Q1b(iii) — redirect to product catalogue
         }, 1200);
- 
+
       } else {
         loginAttempts++;
         sessionStorage.setItem("loginAttempts", loginAttempts);
         remaining = MAX_ATTEMPTS - loginAttempts;
- 
+
         if (loginAttempts >= MAX_ATTEMPTS) {
           window.location.href = "locked.html"; // Q1b(iii) — redirect to error/locked page
         } else {
@@ -570,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
- 
+
   // Question 1a. Registration Page — validate all fields and store a new user object in localStorage
   // Check: all fields filled, age 18+, TRN format (000-000-000), TRN unique, password min 8 chars
   var registerForm = document.getElementById("register-form");
@@ -578,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function() {
     registerForm.addEventListener("submit", function(e) {
       e.preventDefault();
       clearErrors();
- 
+
       var firstName = document.getElementById("reg-firstname").value.trim();
       var lastName  = document.getElementById("reg-lastname").value.trim();
       var dob       = document.getElementById("reg-dob").value;
@@ -588,12 +588,12 @@ document.addEventListener("DOMContentLoaded", function() {
       var trn       = document.getElementById("reg-trn").value.trim();
       var password  = document.getElementById("reg-password").value.trim();
       var valid     = true;
- 
+
       // Question 1a(ii). Validate that all fields are filled using JavaScript error handling
       // Display an error message below any field that is left empty
       if (firstName === "") { showError("reg-firstname", "First name is required.");  valid = false; }
       if (lastName  === "") { showError("reg-lastname",  "Last name is required.");   valid = false; }
- 
+
       // Question 1a(iv). Calculate the visitor's age and reject registration if under 18
       // Use calculateAge() with the entered date of birth to determine eligibility
       if (dob === "") {
@@ -603,10 +603,10 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("reg-dob", "You must be 18 or older to register.");
         valid = false;
       }
- 
+
       if (gender === "") { showError("reg-gender", "Please select your gender."); valid = false; }
       if (phone  === "") { showError("reg-phone",  "Phone number is required.");  valid = false; }
- 
+
       if (email === "") {
         showError("reg-email", "Email is required.");
         valid = false;
@@ -614,7 +614,7 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("reg-email", "Enter a valid email address.");
         valid = false;
       }
- 
+
       // Question 1a(v). Validate TRN format (000-000-000) and ensure it is unique in RegistrationData
       // TRN is used instead of a username for login — it must not already exist in the system
       if (trn === "") {
@@ -627,7 +627,7 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("reg-trn", "This TRN is already registered.");
         valid = false;
       }
- 
+
       // Question 1a(iii). Validate that the password is at least 8 characters long
       // Display an error below the password field if the requirement is not met
       if (password === "") {
@@ -637,7 +637,7 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("reg-password", "Password must be at least 8 characters.");
         valid = false;
       }
- 
+
       // Question 1a(vi). Build the user object and append it to the RegistrationData array in localStorage
       // Store firstName, lastName, dateOfBirth, gender, phone, email, trn, password, dateOfRegistration, cart{}, invoices[]
       if (valid) {
@@ -654,21 +654,21 @@ document.addEventListener("DOMContentLoaded", function() {
           cart              : {},  // Empty cart object
           invoices          : []   // Empty invoices array
         };
- 
+
         var users = getRegistrationData(); // Retrieve existing array from localStorage
         users.push(newUser);              // Append new user object to the array
         saveRegistrationData(users);      // Write updated array back to localStorage
- 
+
         showToast("Registration successful! Welcome to Auriva, " + firstName + ".");
         registerForm.reset();
- 
+
         setTimeout(function() {
           window.location.href = "login.html"; // Redirect to login after successful registration
         }, 1800);
       }
     });
   }
- 
+
   // Question 2c. Checkout Form — validate shipping details before generating an invoice
   // Ensure name, address, phone, and payment amount are all provided and valid
   var checkoutForm = document.getElementById("checkout-form");
@@ -688,21 +688,23 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("co-amount", "Enter a valid payment amount."); valid = false;
       }
       if (valid) {
-        // Question 5. Generate invoice, hide the form, reveal the invoice section
+        // Question 5. Generate invoice, save to localStorage, clear cart, redirect to invoice.html
         generateInvoice(name, address, phone, amount);
-        document.getElementById("checkout-form").style.display   = "none";
-        document.getElementById("invoice-section").style.display = "block";
         clearCart();
+        showToast("Order confirmed! Redirecting to your invoice...");
+        setTimeout(function() {
+          window.location.href = "invoice.html"; // Q5a — display full invoice on dedicated page
+        }, 1400);
       }
     });
   }
- 
+
 });
- 
- 
+
+
 // Question 2c. Validation Helpers — shared functions used across all forms
- 
- 
+
+
 // Question 2c. showError — inject a red error message below a form field and highlight its border
 // Takes the field's id and a message string; appends a .error-msg span inside the field's parent
 function showError(fieldId, message) {
@@ -716,7 +718,7 @@ function showError(fieldId, message) {
   }
   field.style.borderColor = "#c0392b"; // Red border to flag the invalid field
 }
- 
+
 // Question 2c. clearErrors — remove all error messages and reset field border colours
 // Uses querySelectorAll to find every .error-msg span and every input/select on the page
 function clearErrors() {
@@ -725,7 +727,7 @@ function clearErrors() {
   var inputs = document.querySelectorAll("input, select");
   for (var i = 0; i < inputs.length; i++) { inputs[i].style.borderColor = ""; }
 }
- 
+
 // Question 2c. isValidEmail — check that an email address contains the correct format
 // Uses a regular expression to verify the pattern: characters @ characters . characters
 function isValidEmail(email) {
