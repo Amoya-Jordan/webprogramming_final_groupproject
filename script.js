@@ -6,7 +6,6 @@
 
 // CART — localStorage persistence across pages
 
-
 // Question 2. Load the cart array from localStorage so data persists across pages
 // Use JSON.parse() to convert the stored string back into a JavaScript array
 var cart = JSON.parse(localStorage.getItem("auriva_cart")) || [];
@@ -80,6 +79,53 @@ function updateCart() {
       '<div style="min-width:100px;text-align:right;">' +
         '<p style="font-weight:600;color:var(--dark-green);">JMD $' + itemTotal.toFixed(0) + '</p>' +
         '<button class="btn btn-outline" style="font-size:0.65rem;padding:0.4rem 0.8rem;margin-top:0.4rem;animation:none;" onclick="removeItem(' + i + ')">Remove</button>' +
+      '</div>';
+    cartDiv.appendChild(div);
+  }
+
+  var tax   = subtotal * 0.15; // Arithmetic — calculate 15% tax
+  var total = subtotal + tax;  // Arithmetic — grand total
+
+  var sub   = document.getElementById("cart-subtotal"); // DOM manipulation — update summary
+  var taxEl = document.getElementById("cart-tax");
+  var totEl = document.getElementById("cart-total");
+  if (sub)   sub.innerText   = "Subtotal: JMD $" + subtotal.toFixed(0);
+  if (taxEl) taxEl.innerText = "Tax (15%): JMD $" + tax.toFixed(0);
+  if (totEl) totEl.innerText = "Grand Total: JMD $" + total.toFixed(0);
+}
+
+// Question 2a. DOM Manipulation — display a read-only cart summary on the checkout page
+// Renders each item without quantity controls; used so the user can review before confirming
+function displayCartSummary() {
+  var cartDiv = document.getElementById("cart-items");
+  if (!cartDiv) return;
+
+  if (cart.length === 0) { // Control structure — empty cart state
+    cartDiv.innerHTML = '<p>Your cart is empty. <a href="product.html">Continue Shopping</a></p>';
+    resetSummary();
+    return;
+  }
+
+  cartDiv.innerHTML = "";
+  var subtotal = 0;
+
+  for (var i = 0; i < cart.length; i++) { // Loop through cart items
+    var item = cart[i];
+    var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — 10% bundle discount
+    var itemTotal = itemPrice * item.qty;
+    subtotal += itemTotal;
+
+    var div = document.createElement("div"); // DOM manipulation — create and inject summary row
+    div.className = "cart-item";
+    div.innerHTML =
+      '<img src="../Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
+      '<div>' +
+        '<h4>' + item.name + '</h4>' +
+        '<p>' + (item.isBundle ? "Bundle (10% off)" : "Single Oil") + '</p>' +
+        '<p>JMD $' + itemPrice.toFixed(0) + ' each x ' + item.qty + '</p>' +
+      '</div>' +
+      '<div style="min-width:100px;text-align:right;">' +
+        '<p style="font-weight:600;color:var(--dark-green);">JMD $' + itemTotal.toFixed(0) + '</p>' +
       '</div>';
     cartDiv.appendChild(div);
   }
@@ -253,15 +299,211 @@ function resetPassword() {
   }
 }
 
+// Question 5b. Invoice Generation — build a detailed invoice and save it to localStorage
+// Appends the invoice object to the logged-in user's invoices[] array in RegistrationData
+// and also stores it in the AllInvoices array for dashboard access
+function generateInvoice(name, address, phone, amount) {
+  var invoiceDiv = document.getElementById("invoice-content");
+  var subtotal   = 0;
+  var itemsHtml  = "";
+  var itemsData  = [];
+
+  for (var i = 0; i < cart.length; i++) { // Loop through cart to build line items
+    var item      = cart[i];
+    var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — bundle discount
+    var itemTotal = itemPrice * item.qty;
+    subtotal += itemTotal;
+
+    // Build HTML row for invoice display
+    itemsHtml +=
+      '<tr>' +
+        '<td>' + item.name + '</td>' +
+        '<td>' + item.qty  + '</td>' +
+        '<td>JMD $' + itemPrice.toFixed(0) + '</td>' +
+        '<td>JMD $' + itemTotal.toFixed(0) + '</td>' +
+      '</tr>';
+
+    // Build plain object for localStorage storage
+    itemsData.push({
+      name     : item.name,
+      qty      : item.qty,
+      price    : itemPrice,
+      total    : itemTotal,
+      isBundle : item.isBundle
+    });
+  }
+
+  var tax          = subtotal * 0.15; // Arithmetic — 15% tax
+  var total        = subtotal + tax;  // Arithmetic — grand total
+  var invoiceNum   = "INV-" + Date.now(); // Unique invoice number using timestamp
+  var invoiceDate  = new Date().toLocaleDateString();
+  var loggedInTRN  = localStorage.getItem("loggedInTRN") || "N/A";
+
+  // Question 5a. DOM Manipulation — inject full invoice HTML into #invoice-content
+  if (invoiceDiv) {
+    invoiceDiv.innerHTML =
+      '<h3>Auriva Essential Oils</h3>' +
+      '<p><strong>Invoice #:</strong> '    + invoiceNum  + '</p>' +
+      '<p><strong>Date:</strong> '         + invoiceDate + '</p>' +
+      '<p><strong>TRN:</strong> '          + loggedInTRN + '</p>' +
+      '<hr>' +
+      '<p><strong>Name:</strong> '         + name    + '</p>' +
+      '<p><strong>Address:</strong> '      + address + '</p>' +
+      '<p><strong>Phone:</strong> '        + phone   + '</p>' +
+      '<p><strong>Amount Paid:</strong> JMD $' + amount + '</p>' +
+      '<table class="invoice-table">' +
+        '<tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>' +
+        itemsHtml +
+        '<tr><td colspan="3">Subtotal</td><td>JMD $'              + subtotal.toFixed(0) + '</td></tr>' +
+        '<tr><td colspan="3">Tax (15%)</td><td>JMD $'             + tax.toFixed(0)      + '</td></tr>' +
+        '<tr><td colspan="3"><strong>Grand Total</strong></td><td><strong>JMD $' + total.toFixed(0) + '</strong></td></tr>' +
+      '</table>' +
+      '<p style="margin-top:1rem;">Thank you for your purchase! A receipt has been sent to your email.</p>';
+  }
+
+  // Question 5b. Build invoice object and persist to localStorage
+  var invoiceObj = {
+    invoiceNumber : invoiceNum,
+    date          : invoiceDate,
+    trn           : loggedInTRN,
+    name          : name,
+    address       : address,
+    phone         : phone,
+    amountPaid    : amount,
+    items         : itemsData,
+    subtotal      : subtotal,
+    tax           : tax,
+    total         : total
+  };
+
+  // Append to AllInvoices in localStorage
+  var allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
+  allInvoices.push(invoiceObj);
+  localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
+
+  // Append to the logged-in user's invoices[] inside RegistrationData
+  var users = getRegistrationData();
+  for (var j = 0; j < users.length; j++) {
+    if (users[j].trn === loggedInTRN) {
+      if (!users[j].invoices) { users[j].invoices = []; }
+      users[j].invoices.push(invoiceObj);
+      break;
+    }
+  }
+  saveRegistrationData(users);
+}
+
+// Question 6b. ShowInvoices() — log all invoices stored in AllInvoices to the console
+// Optionally accepts a TRN string to filter results; pass null or "" to show all invoices
+function ShowInvoices(filterTRN) {
+  var allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
+  if (!filterTRN || filterTRN.trim() === "") {
+    console.log("=== All Invoices ===");
+    console.log(allInvoices);
+  } else {
+    var filtered = [];
+    for (var i = 0; i < allInvoices.length; i++) {
+      if (allInvoices[i].trn === filterTRN.trim()) { filtered.push(allInvoices[i]); }
+    }
+    console.log("=== Invoices for TRN: " + filterTRN + " ===");
+    console.log(filtered);
+  }
+}
+
+// Question 6c. GetUserInvoices() — display all invoices for a specific user by TRN
+// Reads from RegistrationData (the user's own invoices[] array) and logs them to the console
+function GetUserInvoices(trn) {
+  var user = findUserByTRN(trn);
+  if (!user) {
+    console.log("No user found with TRN: " + trn);
+    return;
+  }
+  console.log("=== Invoices for " + user.firstName + " " + user.lastName + " ===");
+  console.log(user.invoices || []);
+}
+
+// Question 6a. ShowUserFrequency() — display bar charts for gender and age group on the dashboard
+// Reads RegistrationData, counts users per category, then injects bar chart HTML using inline images
+function ShowUserFrequency() {
+  var users      = getRegistrationData();
+  var genderDiv  = document.getElementById("gender-chart");
+  var ageDiv     = document.getElementById("age-chart");
+  if (!genderDiv && !ageDiv) { return; } // Only run on the dashboard page
+
+  // Count gender frequencies
+  var genderCounts = { Male: 0, Female: 0, Other: 0 };
+  // Count age-group frequencies
+  var ageCounts = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
+
+  for (var i = 0; i < users.length; i++) { // Loop through all registered users
+    var u = users[i];
+
+    // Gender tally — control structure
+    var g = (u.gender || "").toLowerCase();
+    if      (g === "male")   { genderCounts.Male++;   }
+    else if (g === "female") { genderCounts.Female++; }
+    else                     { genderCounts.Other++;  }
+
+    // Age-group tally — arithmetic and control structure
+    var age = calculateAge(u.dateOfBirth);
+    if      (age >= 18 && age <= 25) { ageCounts["18-25"]++; }
+    else if (age >= 26 && age <= 35) { ageCounts["26-35"]++; }
+    else if (age >= 36 && age <= 50) { ageCounts["36-50"]++; }
+    else if (age >  50)              { ageCounts["50+"]++;   }
+  }
+
+  // Helper — build one bar chart row using a stretched thinbar image for the bar width
+  function buildBar(label, count, max) {
+    var BAR_MAX_PX = 300;
+    var barWidth   = max > 0 ? Math.round((count / max) * BAR_MAX_PX) : 0;
+    return (
+      '<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">' +
+        '<span style="min-width:70px;font-size:0.85rem;">' + label + '</span>' +
+        '<img src="../Assets/images/thinbar.jpg" width="' + barWidth + 'px" height="22" alt="bar" style="display:block;">' +
+        '<span style="font-size:0.85rem;">' + count + '</span>' +
+      '</div>'
+    );
+  }
+
+  // Render gender chart
+  if (genderDiv) {
+    var maxGender = Math.max(genderCounts.Male, genderCounts.Female, genderCounts.Other, 1);
+    var gHtml     = '<h3 style="margin-bottom:0.8rem;">Users by Gender</h3>';
+    gHtml += buildBar("Male",   genderCounts.Male,   maxGender);
+    gHtml += buildBar("Female", genderCounts.Female, maxGender);
+    gHtml += buildBar("Other",  genderCounts.Other,  maxGender);
+    genderDiv.innerHTML = gHtml;
+  }
+
+  // Render age-group chart
+  if (ageDiv) {
+    var maxAge = Math.max(ageCounts["18-25"], ageCounts["26-35"], ageCounts["36-50"], ageCounts["50+"], 1);
+    var aHtml  = '<h3 style="margin-bottom:0.8rem;">Users by Age Group</h3>';
+    aHtml += buildBar("18-25", ageCounts["18-25"], maxAge);
+    aHtml += buildBar("26-35", ageCounts["26-35"], maxAge);
+    aHtml += buildBar("36-50", ageCounts["36-50"], maxAge);
+    aHtml += buildBar("50+",   ageCounts["50+"],   maxAge);
+    ageDiv.innerHTML = aHtml;
+  }
+}
+
 
 // Question 2b. Event Handling — DOMContentLoaded listener
 // Attach all form submit handlers after the page has fully loaded
 
 document.addEventListener("DOMContentLoaded", function() {
 
+  // Initialise cart display: read-only summary on checkout page, full cart elsewhere
   if (document.getElementById("cart-items")) {
-    updateCart(); // Initialise cart display on cart page
+    if (document.getElementById("checkout-form")) {
+      displayCartSummary(); // Question 2a — read-only checkout summary
+    } else {
+      updateCart();         // Full interactive cart display
+    }
   }
+
+  // Run frequency charts if the dashboard page is loaded
+  ShowUserFrequency(); // Question 6a — safe to call; exits early if elements are absent
 
   // Question 1b. Login Page — validate TRN and password against RegistrationData in localStorage
   // Give the visitor 3 attempts; redirect to locked.html if all attempts are exhausted
@@ -451,10 +693,13 @@ document.addEventListener("DOMContentLoaded", function() {
       if (amount  === "" || isNaN(amount) || Number(amount) <= 0) {
         showError("co-amount", "Enter a valid payment amount."); valid = false;
       }
+
       if (valid) {
-        showToast("Order confirmed! Thank you for shopping with Auriva.");
-        clearCart();
-        checkoutForm.reset();
+        // Question 5. Generate invoice, hide the form, and reveal the invoice section
+        generateInvoice(name, address, phone, amount);
+        document.getElementById("checkout-form").style.display  = "none";
+        document.getElementById("invoice-section").style.display = "block";
+        clearCart(); // Clear the cart after a successful order
       }
     });
   }
