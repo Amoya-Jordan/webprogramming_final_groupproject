@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout &mdash; Auriva</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">AURI<span>VA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Checkout Form — JS Q2c-->
+  <section class="form-section">
+    <h2>Checkout</h2>
+    <p class="form-subtitle">Secure Order &middot; Auriva</p>
+
+    <!-- JS Q2b: submit event listener in script.js handles this form -->
+    <!-- Q3b: labels linked to inputs for accessibility -->
+    <form id="checkout-form" novalidate>
+
+      <div class="form-group">
+        <label for="co-name">Full Name</label>
+        <input type="text" id="co-name" name="co-name" placeholder="Jane Smith" required>
+        <!-- JS Q2a: error span injected here by showError() in script.js -->
+      </div>
+
+      <div class="form-group">
+        <label for="co-address">Delivery Address</label>
+        <input type="text" id="co-address" name="co-address" placeholder="123 Main Street, Kingston" required>
+      </div>
+
+      <div class="form-group">
+        <label for="co-phone">Phone Number</label>
+        <input type="text" id="co-phone" name="co-phone" placeholder="+1 (876) 000-0000" required>
+      </div>
+
+      <div class="form-group">
+        <label for="co-amount">Amount Being Paid (JMD $)</label>
+        <input type="number" id="co-amount" name="co-amount" placeholder="0" min="1" required>
+      </div>
+
+      <!--  Confirm, Cancel/Clear, Check Out, Close buttons -->
+      <div class="form-actions">
+        <button type="submit" class="btn">Confirm Order</button>
+        <button type="reset"  class="btn btn-outline">Clear All</button>
+        <a href="cart.html"   class="btn btn-outline">Check Out</a>
+        <button type="button" class="btn btn-outline" onclick="window.close()">Close</button>
+      </div>
+
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 <span>Auriva</span> Essential Oils &nbsp;&middot;&nbsp; Pure. Natural. Yours.</p>
+  </footer>
+
+</body>
+</html>
