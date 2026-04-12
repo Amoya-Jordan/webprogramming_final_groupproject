@@ -727,7 +727,72 @@ function clearErrors() {
   var inputs = document.querySelectorAll("input, select");
   for (var i = 0; i < inputs.length; i++) { inputs[i].style.borderColor = ""; }
 }
+//INVOIVE GENERATOR JAVA
+function generateInvoice() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+  if (cart.length === 0) {
+    alert("Cart is empty!");
+    return;
+  }
+
+  const invoice = document.getElementById("invoice");
+  const invoiceItems = document.getElementById("invoice-items");
+
+  invoiceItems.innerHTML = "";
+
+  let subtotal = 0;
+
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+
+    const row = `
+      <tr>
+        <td>${item.name}</td>
+        <td>${item.price}</td>
+        <td>${item.quantity}</td>
+        <td>${itemTotal}</td>
+      </tr>
+    `;
+
+    invoiceItems.innerHTML += row;
+  });
+
+  const tax = subtotal * 0.15;
+  const total = subtotal + tax;
+
+  // Set values
+  document.getElementById("invoice-date").innerText = new Date().toLocaleDateString();
+  document.getElementById("invoice-subtotal").innerText = "Subtotal: JMD $" + subtotal.toFixed(2);
+  document.getElementById("invoice-tax").innerText = "Tax (15%): JMD $" + tax.toFixed(2);
+  document.getElementById("invoice-total").innerText = "Grand Total: JMD $" + total.toFixed(2);
+
+  // Show invoice
+  invoice.style.display = "block";
+
+  // Scroll to invoice
+  invoice.scrollIntoView({ behavior: "smooth" });
+}
+
+function printInvoice() {
+  const invoiceContent = document.getElementById("invoice").innerHTML;
+
+  const newWindow = window.open("", "", "width=800,height=600");
+  newWindow.document.write(`
+    <html>
+      <head>
+        <title>Invoice</title>
+      </head>
+      <body>
+        ${invoiceContent}
+      </body>
+    </html>
+  `);
+
+  newWindow.document.close();
+  newWindow.print();
+}
 // Question 2c. isValidEmail — check that an email address contains the correct format
 // Uses a regular expression to verify the pattern: characters @ characters . characters
 function isValidEmail(email) {
