@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop &mdash; Auriva</title>
+  <!-- CSS Q3a: External stylesheet linked -->
+  <link rel="stylesheet" href="style.css">
+  <!-- JS Q3a: External script linked with defer -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Navigation — CSS Q1b-->
+  <nav>
+    <a href="index.html" class="nav-brand">AURI<span>VA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="product.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header — CSS Q1a-->
+  <div class="page-header">
+    <!-- Q3b: alt text for accessibility -->
+    <img src="../Assets/images/logo.png" alt="Auriva Essential Oils Logo" class="logo">
+    <h1>Our Collection</h1>
+    <p class="tagline">Pure &middot; Natural &middot; Essential</p>
+  </div>
+
+  <!-- Single Oils — CSS Q1b: CSS Grid layout -->
+  <section class="products-section">
+    <div class="section-title">
+      <h2>Single Oils</h2>
+      <p>Individually Sourced</p>
+      <div class="divider"></div>
+    </div>
+
+    <!-- CSS Q1b: Grid — product-grid -->
+    <div class="product-grid">
+
+      <!-- JS Q2d: onclick calls addToCart() with product details -->
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/E_Oil.jpg" alt="Eucalyptus Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Eucalyptus Oil</h3>
+          <p class="price">JMD $1,200</p>
+          <button class="btn btn-outline" onclick="addToCart('Eucalyptus Oil', 1200, 'E_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/F_Oil.jpg" alt="Frankincense Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Frankincense Oil</h3>
+          <p class="price">JMD $1,800</p>
+          <button class="btn btn-outline" onclick="addToCart('Frankincense Oil', 1800, 'F_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/L_Oil.jpg" alt="Lavender Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Lavender Oil</h3>
+          <p class="price">JMD $1,400</p>
+          <button class="btn btn-outline" onclick="addToCart('Lavender Oil', 1400, 'L_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/LG_Oil.jpg" alt="Lemongrass Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Lemongrass Oil</h3>
+          <p class="price">JMD $1,100</p>
+          <button class="btn btn-outline" onclick="addToCart('Lemongrass Oil', 1100, 'LG_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/O_Oil.jpg" alt="Orange Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Orange Oil</h3>
+          <p class="price">JMD $1,000</p>
+          <button class="btn btn-outline" onclick="addToCart('Orange Oil', 1000, 'O_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/P_Oil.jpg" alt="Peppermint Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Peppermint Oil</h3>
+          <p class="price">JMD $1,300</p>
+          <button class="btn btn-outline" onclick="addToCart('Peppermint Oil', 1300, 'P_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/R_Oil.jpg" alt="Rosemary Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Rosemary Oil</h3>
+          <p class="price">JMD $1,250</p>
+          <button class="btn btn-outline" onclick="addToCart('Rosemary Oil', 1250, 'R_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="card-img" src="../Assets/images/T_Oil.jpg" alt="Tea Tree Essential Oil by Auriva">
+        <div class="card-body">
+          <h3>Tea Tree Oil</h3>
+          <p class="price">JMD $1,350</p>
+          <button class="btn btn-outline" onclick="addToCart('Tea Tree Oil', 1350, 'T_Oil.jpg')">Add to Cart</button>
+        </div>
+      </div>
+
+    </div><!-- end .product-grid -->
+  </section>
+
+  <!-- Bundle Deals — dark green strip -->
+  <section class="bundle-section">
+    <div class="section-title">
+      <h2>Bundle Deals</h2>
+      <p>Save 10% &middot; Curated Sets</p>
+      <div class="divider"></div>
+    </div>
+
+    <!-- CSS Q1b: Grid — bundle-grid -->
+    <div class="bundle-grid">
+
+      <div class="bundle-card">
+        <img src="../Assets/images/PLF_Oil.jpg" alt="The Calm Bundle - Lavender, Rosemary, Eucalyptus">
+        <div class="bundle-body">
+          <span class="bundle-badge">Save 10%</span>
+          <h3>The Calm Bundle</h3>
+          <p class="bundle-price">
+            Lavender &middot; Rosemary &middot; Eucalyptus<br>
+            <strong style="color:var(--gold-light);">JMD $3,456</strong> (was JMD $3,850)
+          </p>
+          <!-- JS Q2d: isBundle=true triggers 10% discount in addToCart() -->
+          <button class="btn btn-gold" onclick="addToCart('The Calm Bundle', 3840, 'PLF_Oil.jpg', true)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="bundle-card">
+        <img src="../Assets/images/RLE_Oil.jpg" alt="The Refresh Bundle - Peppermint, Lemongrass, Frankincense">
+        <div class="bundle-body">
+          <span class="bundle-badge">Save 10%</span>
+          <h3>The Refresh Bundle</h3>
+          <p class="bundle-price">
+            Peppermint &middot; Lemongrass &middot; Frankincense<br>
+            <strong style="color:var(--gold-light);">JMD $3,699</strong> (was JMD $4,100)
+          </p>
+          <button class="btn btn-gold" onclick="addToCart('The Refresh Bundle', 4110, 'RLE_Oil.jpg', true)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="bundle-card">
+        <img src="../Assets/images/TOE_Oil.jpg" alt="The Citrus Bundle - Orange, Tea Tree, Eucalyptus">
+        <div class="bundle-body">
+          <span class="bundle-badge">Save 10%</span>
+          <h3>The Citrus Bundle</h3>
+          <p class="bundle-price">
+            Orange &middot; Tea Tree &middot; Eucalyptus<br>
+            <strong style="color:var(--gold-light);">JMD $3,195</strong> (was JMD $3,550)
+          </p>
+          <button class="btn btn-gold" onclick="addToCart('The Citrus Bundle', 3550, 'TOE_Oil.jpg', true)">Add to Cart</button>
+        </div>
+      </div>
+
+    </div><!-- end .bundle-grid -->
+  </section>
+
+  <footer>
+    <p>&copy; 2026 <span>Auriva</span> Essential Oils &nbsp;&middot;&nbsp; Pure. Natural. Yours.</p>
+  </footer>
+
+</body>
+</html>
