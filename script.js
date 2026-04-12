@@ -1,6 +1,46 @@
 // Auriva Essential Oils — External JavaScript
 // Module: CIT2011 Web Programming | Final Group Project
-// Members: Amoya Jordan - 2302539, Antwone Lamont -,Kyle Walker - 2403246, Victoria Wilson -2207197
+// Members: Amoya Jordan - 2302539, Antwone Lamont -,Kyle Walker - 2403246, Victoria Wilson - 2207197
+
+// 2 a. Product list using array of objects
+var products = JSON.parse(localStorage.getItem("AllProducts")) || [
+  { name: "Eucalyptus Oil",  price: 1200, description: "Refreshing and clearing oil.", image: "E_Oil.jpg" },
+  { name: "Frankincense Oil", price: 1800, description: "Calming and grounding oil.", image: "F_Oil.jpg" },
+  { name: "Lavender Oil", price: 1400, description: "Relaxing and soothing oil.", image: "L_Oil.jpg" },
+  { name: "Lemongrass Oil", price: 1100, description: "Fresh citrus scent.", image: "LG_Oil.jpg" },
+  { name: "Orange Oil", price: 1000, description: "Sweet uplifting aroma.", image: "O_Oil.jpg" },
+  { name: "Peppermint Oil", price: 1300, description: "Cooling and energizing.", image: "P_Oil.jpg" },
+  { name: "Rosemary Oil", price: 1250, description: "Herbal and stimulating.", image: "R_Oil.jpg" },
+  { name: "Tea Tree Oil", price: 1350, description: "Purifying and cleansing.", image: "T_Oil.jpg" }
+];
+
+// Saving to localStorage
+localStorage.setItem("AllProducts", JSON.stringify(products));
+
+// Displaying products dynamically
+function displayProducts() {
+  var container = document.getElementById("product-grid");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  for (var i = 0; i < products.length; i++) {
+    var p = products[i];
+
+    var div = document.createElement("div");
+    div.className = "product-card";
+    div.innerHTML =
+      '<img class="card-img" src="Assets/images/' + p.image + '" alt="' + p.name + '">' +
+      '<div class="card-body">' +
+        '<h3>' + p.name + '</h3>' +
+        '<p>' + p.description + '</p>' +
+        '<p class="price">JMD $' + p.price + '</p>' +
+        '<button class="btn btn-outline" onclick="addToCart(\'' + p.name + '\',' + p.price + ',\'' + p.image + '\')">Add to Cart</button>' +
+      '</div>';
+
+    container.appendChild(div);
+  }
+}
 
 
 
@@ -252,234 +292,65 @@ function resetPassword() {
   }
 }
 
-// ─── ADDED FROM DOCUMENT 2 ────────────────────────────────────────────────────
+// Question 6 a. Show User Frequency — analyse users by gender and age group
+// Counts how many users fall into each category and displays the result
+function showUserFrequency() {
 
-// Question 4c. Checkout — display a read-only summary of the cart before the user confirms
-// Renders each item without quantity controls so the user can review before confirming
-function displayCartSummary() {
-  var cartDiv = document.getElementById("cart-items");
-  if (!cartDiv) return;
+  var users = getRegistrationData();
 
-  if (cart.length === 0) { // Control structure — empty cart state
-    cartDiv.innerHTML = '<p>Your cart is empty. <a href="product.html">Continue Shopping</a></p>';
-    resetSummary();
-    return;
-  }
-
-  cartDiv.innerHTML = "";
-  var subtotal = 0;
-
-  for (var i = 0; i < cart.length; i++) { // Loop through cart items
-    var item      = cart[i];
-    var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — 10% bundle discount
-    var itemTotal = itemPrice * item.qty;
-    subtotal += itemTotal;
-
-    var div = document.createElement("div"); // DOM manipulation — create read-only summary row
-    div.className = "cart-item";
-    div.innerHTML =
-      '<img src="../Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
-      '<div>' +
-        '<h4>' + item.name + '</h4>' +
-        '<p>' + (item.isBundle ? "Bundle (10% off)" : "Single Oil") + '</p>' +
-        '<p>JMD $' + itemPrice.toFixed(0) + ' each x ' + item.qty + '</p>' +
-      '</div>' +
-      '<div style="min-width:100px;text-align:right;">' +
-        '<p style="font-weight:600;color:var(--dark-green);">JMD $' + itemTotal.toFixed(0) + '</p>' +
-      '</div>';
-    cartDiv.appendChild(div);
-  }
-
-  var tax   = subtotal * 0.15; // Arithmetic — calculate 15% tax
-  var total = subtotal + tax;  // Arithmetic — grand total
-
-  var sub   = document.getElementById("cart-subtotal"); // DOM manipulation — update summary
-  var taxEl = document.getElementById("cart-tax");
-  var totEl = document.getElementById("cart-total");
-  if (sub)   sub.innerText   = "Subtotal: JMD $" + subtotal.toFixed(0);
-  if (taxEl) taxEl.innerText = "Tax (15%): JMD $" + tax.toFixed(0);
-  if (totEl) totEl.innerText = "Grand Total: JMD $" + total.toFixed(0);
-}
-
-// Question 5. Invoice Generation — build the invoice HTML and save it to localStorage
-// Appends the invoice to AllInvoices and to the logged-in user's invoices[] in RegistrationData
-function generateInvoice(name, address, phone, amount) {
-  var invoiceDiv = document.getElementById("invoice-content");
-  var subtotal   = 0;
-  var itemsHtml  = "";
-  var itemsData  = [];
-
-  for (var i = 0; i < cart.length; i++) { // Loop through cart to build line items
-    var item      = cart[i];
-    var itemPrice = item.isBundle ? item.price * 0.90 : item.price; // Arithmetic — bundle discount
-    var itemTotal = itemPrice * item.qty;
-    subtotal += itemTotal;
-
-    itemsHtml +=
-      '<tr>' +
-        '<td>' + item.name + '</td>' +
-        '<td>' + item.qty  + '</td>' +
-        '<td>JMD $' + itemPrice.toFixed(0) + '</td>' +
-        '<td>JMD $' + itemTotal.toFixed(0) + '</td>' +
-      '</tr>';
-
-    itemsData.push({ name: item.name, qty: item.qty, price: itemPrice, total: itemTotal, isBundle: item.isBundle });
-  }
-
-  var tax         = subtotal * 0.15; // Arithmetic — 15% tax
-  var total       = subtotal + tax;  // Arithmetic — grand total
-  var invoiceNum  = "INV-" + Date.now(); // Unique invoice number using timestamp
-  var invoiceDate = new Date().toLocaleDateString();
-  var loggedInTRN = localStorage.getItem("loggedInTRN") || "N/A";
-
-  // Question 5a. DOM Manipulation — inject full invoice HTML into #invoice-content
-  if (invoiceDiv) {
-    invoiceDiv.innerHTML =
-      '<h3>Auriva Essential Oils</h3>' +
-      '<p><strong>Invoice #:</strong> '        + invoiceNum  + '</p>' +
-      '<p><strong>Date:</strong> '             + invoiceDate + '</p>' +
-      '<p><strong>TRN:</strong> '              + loggedInTRN + '</p>' +
-      '<hr>' +
-      '<p><strong>Name:</strong> '             + name    + '</p>' +
-      '<p><strong>Address:</strong> '          + address + '</p>' +
-      '<p><strong>Phone:</strong> '            + phone   + '</p>' +
-      '<p><strong>Amount Paid:</strong> JMD $' + amount  + '</p>' +
-      '<table class="invoice-table">' +
-        '<tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>' +
-        itemsHtml +
-        '<tr><td colspan="3">Subtotal</td><td>JMD $' + subtotal.toFixed(0) + '</td></tr>' +
-        '<tr><td colspan="3">Tax (15%)</td><td>JMD $' + tax.toFixed(0) + '</td></tr>' +
-        '<tr><td colspan="3"><strong>Grand Total</strong></td><td><strong>JMD $' + total.toFixed(0) + '</strong></td></tr>' +
-      '</table>' +
-      '<p style="margin-top:1rem;">Thank you for your purchase! A receipt has been sent to your email.</p>';
-  }
-
-  // Question 5b. Build invoice object and save to AllInvoices in localStorage
-  var invoiceObj = {
-    invoiceNumber : invoiceNum,
-    date          : invoiceDate,
-    trn           : loggedInTRN,
-    name          : name,
-    address       : address,
-    phone         : phone,
-    amountPaid    : amount,
-    items         : itemsData,
-    subtotal      : subtotal,
-    tax           : tax,
-    total         : total
+  var genderCount = {
+    Male   : 0,
+    Female : 0,
+    Other  : 0
   };
 
-  var allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
-  allInvoices.push(invoiceObj);
-  localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
+  var ageGroups = {
+    "18-25" : 0,
+    "26-35" : 0,
+    "36-50" : 0,
+    "50+"   : 0
+  };
 
-  // Also append to the logged-in user's invoices[] inside RegistrationData
-  var users = getRegistrationData();
-  for (var j = 0; j < users.length; j++) {
-    if (users[j].trn === loggedInTRN) {
-      if (!users[j].invoices) { users[j].invoices = []; }
-      users[j].invoices.push(invoiceObj);
-      break;
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i];
+
+    // Counting Gender
+    if (genderCount[user.gender] !== undefined) {
+      genderCount[user.gender]++;
+    }
+
+    // Calculating Age
+    var age = calculateAge(user.dateOfBirth);
+
+    // Counting Age Groups
+    if (age >= 18 && age <= 25) {
+      ageGroups["18-25"]++;
+    } else if (age <= 35) {
+      ageGroups["26-35"]++;
+    } else if (age <= 50) {
+      ageGroups["36-50"]++;
+    } else {
+      ageGroups["50+"]++;
     }
   }
-  saveRegistrationData(users);
+
+  //6 a. iii) Displaying Results
+  var container = document.getElementById("user-frequency");
+  if (!container) return;
+
+  container.innerHTML =
+    "<h3>User Frequency</h3>" +
+    "<p><strong>Gender:</strong></p>" +
+    "<p>Male: " + genderCount.Male + "</p>" +
+    "<p>Female: " + genderCount.Female + "</p>" +
+    "<p>Other: " + genderCount.Other + "</p>" +
+    "<p><strong>Age Groups:</strong></p>" +
+    "<p>18-25: " + ageGroups["18-25"] + "</p>" +
+    "<p>26-35: " + ageGroups["26-35"] + "</p>" +
+    "<p>36-50: " + ageGroups["36-50"] + "</p>" +
+    "<p>50+: " + ageGroups["50+"] + "</p>";
 }
 
-// Question 6b. ShowInvoices() — log all invoices from AllInvoices to the console
-// Pass a TRN string to filter by user, or pass "" to show every invoice
-function ShowInvoices(filterTRN) {
-  var allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
-  if (!filterTRN || filterTRN.trim() === "") {
-    console.log("=== All Invoices ===");
-    console.log(allInvoices);
-  } else {
-    var filtered = [];
-    for (var i = 0; i < allInvoices.length; i++) {
-      if (allInvoices[i].trn === filterTRN.trim()) { filtered.push(allInvoices[i]); }
-    }
-    console.log("=== Invoices for TRN: " + filterTRN + " ===");
-    console.log(filtered);
-  }
-}
-
-// Question 6c. GetUserInvoices() — display all invoices for a specific user by TRN
-// Reads the invoices[] array stored on the user object inside RegistrationData
-function GetUserInvoices(trn) {
-  var user = findUserByTRN(trn);
-  if (!user) {
-    console.log("No user found with TRN: " + trn);
-    return;
-  }
-  console.log("=== Invoices for " + user.firstName + " " + user.lastName + " ===");
-  console.log(user.invoices || []);
-}
-
-// Question 6a. ShowUserFrequency() — render gender and age-group bar charts on the dashboard
-// Reads RegistrationData, counts users per category, then injects bar chart HTML using stretched images
-function ShowUserFrequency() {
-  var users     = getRegistrationData();
-  var genderDiv = document.getElementById("gender-chart");
-  var ageDiv    = document.getElementById("age-chart");
-  if (!genderDiv && !ageDiv) { return; } // Only runs on the dashboard page
-
-  // Count gender frequencies
-  var genderCounts = { Male: 0, Female: 0, Other: 0 };
-  // Count age-group frequencies
-  var ageCounts = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
-
-  for (var i = 0; i < users.length; i++) { // Loop through all registered users
-    var u = users[i];
-
-    // Gender tally
-    var g = (u.gender || "").toLowerCase();
-    if      (g === "male")   { genderCounts.Male++;   }
-    else if (g === "female") { genderCounts.Female++; }
-    else                     { genderCounts.Other++;  }
-
-    // Age-group tally — arithmetic and control structure
-    var age = calculateAge(u.dateOfBirth);
-    if      (age >= 18 && age <= 25) { ageCounts["18-25"]++; }
-    else if (age >= 26 && age <= 35) { ageCounts["26-35"]++; }
-    else if (age >= 36 && age <= 50) { ageCounts["36-50"]++; }
-    else if (age >  50)              { ageCounts["50+"]++;   }
-  }
-
-  // Helper — build one bar using a stretched thinbar image (as shown in assignment spec)
-  function buildBar(label, count, max) {
-    var BAR_MAX_PX = 300;
-    var barWidth   = max > 0 ? Math.round((count / max) * BAR_MAX_PX) : 0;
-    return (
-      '<div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;">' +
-        '<span style="min-width:70px;font-size:0.85rem;">' + label + '</span>' +
-        '<img src="../Assets/images/thinbar.jpg" width="' + barWidth + '" height="22" alt="bar">' +
-        '<span style="font-size:0.85rem;">' + count + '</span>' +
-      '</div>'
-    );
-  }
-
-  // Render gender chart into #gender-chart
-  if (genderDiv) {
-    var maxGender = Math.max(genderCounts.Male, genderCounts.Female, genderCounts.Other, 1);
-    var gHtml = '<h3 style="margin-bottom:0.8rem;">Users by Gender</h3>';
-    gHtml += buildBar("Male",   genderCounts.Male,   maxGender);
-    gHtml += buildBar("Female", genderCounts.Female, maxGender);
-    gHtml += buildBar("Other",  genderCounts.Other,  maxGender);
-    genderDiv.innerHTML = gHtml;
-  }
-
-  // Render age-group chart into #age-chart
-  if (ageDiv) {
-    var maxAge = Math.max(ageCounts["18-25"], ageCounts["26-35"], ageCounts["36-50"], ageCounts["50+"], 1);
-    var aHtml = '<h3 style="margin-bottom:0.8rem;">Users by Age Group</h3>';
-    aHtml += buildBar("18-25", ageCounts["18-25"], maxAge);
-    aHtml += buildBar("26-35", ageCounts["26-35"], maxAge);
-    aHtml += buildBar("36-50", ageCounts["36-50"], maxAge);
-    aHtml += buildBar("50+",   ageCounts["50+"],   maxAge);
-    ageDiv.innerHTML = aHtml;
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 
 // Question 2b. Event Handling — DOMContentLoaded listener
@@ -487,17 +358,19 @@ function ShowUserFrequency() {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-  // Initialise cart: read-only summary on checkout page, full interactive cart elsewhere
+  ///calling display function
+  if (document.getElementById("product-grid")) {
+     displayProducts();
+ }
+
   if (document.getElementById("cart-items")) {
-    if (document.getElementById("checkout-form")) {
-      displayCartSummary(); // Read-only summary for checkout page
-    } else {
-      updateCart(); // Initialise cart display on cart page
-    }
+    updateCart(); // Initialise cart display on cart page
   }
 
-  // Run frequency charts if dashboard elements are present (exits silently on all other pages)
-  ShowUserFrequency();
+// User Frequency — run if container exists
+  if (document.getElementById("user-frequency")) {
+    showUserFrequency();
+  }
 
   // Question 1b. Login Page — validate TRN and password against RegistrationData in localStorage
   // Give the visitor 3 attempts; redirect to locked.html if all attempts are exhausted
@@ -688,13 +561,9 @@ document.addEventListener("DOMContentLoaded", function() {
         showError("co-amount", "Enter a valid payment amount."); valid = false;
       }
       if (valid) {
-        // Question 5. Generate invoice, save to localStorage, clear cart, redirect to invoice.html
-        generateInvoice(name, address, phone, amount);
+        showToast("Order confirmed! Thank you for shopping with Auriva.");
         clearCart();
-        showToast("Order confirmed! Redirecting to your invoice...");
-        setTimeout(function() {
-          window.location.href = "invoice.html"; // Q5a — display full invoice on dedicated page
-        }, 1400);
+        checkoutForm.reset();
       }
     });
   }
