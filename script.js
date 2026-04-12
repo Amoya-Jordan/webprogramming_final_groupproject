@@ -1,6 +1,6 @@
 // Auriva Essential Oils — External JavaScript
 // Module: CIT2011 Web Programming | Final Group Project
-// Members: Amoya Jordan - 2302539, Antwone Lamont -,Kyle Walker - 2403246, Victoria Wilson -2207197
+// Members: Amoya Jordan - 2302539, Antwone Lamont - 2406412,Kyle Walker - 2403246, Victoria Wilson -2207197
  
  
  
