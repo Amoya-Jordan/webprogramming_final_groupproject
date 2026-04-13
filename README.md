@@ -23,10 +23,10 @@ localStorage: Client-side data persistence for users, cart items, and invoices.
 Single Oils
 | Product | Price (JMD) | Description |
 | :--- | :--- | :--- |
-| Eucalyptus Oil | $1,200 | [cite_start]Refreshing and clearing [cite: 64] |
-| Frankincense Oil | $1,800 | [cite_start]Calming and grounding [cite: 64] |
-| Lavender Oil | $1,400 | [cite_start]Relaxing and soothing [cite: 64] |
-| Lemongrass Oil | $1,100 | [cite_start]Fresh citrus scent [cite: 64] |
+| Eucalyptus Oil | $1,200 | []Refreshing and clearing  |
+| Frankincense Oil | $1,800 | []Calming and grounding  |
+| Lavender Oil | $1,400 | []Relaxing and soothing  |
+| Lemongrass Oil | $1,100 | []Fresh citrus scent  |
 
 Bundle Deals (10% Off)
 The Calm Bundle: Lavender, Rosemary, and Eucalyptus - $3,456.
