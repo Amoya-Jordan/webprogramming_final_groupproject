@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard — Auriva</title>
-
   <link rel="stylesheet" href="style.css">
-
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -18,30 +16,78 @@
       <li><a href="product.html">Shop</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="cart.html">Cart</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li> 
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
     </ul>
   </nav>
 
   <div class="page-header">
     <h1>User Dashboard</h1>
-    <p class="tagline">Analytics & Insights</p>
+    <p class="tagline">Analytics &amp; Insights</p>
   </div>
 
-  <!-- user frequency -->
-  <section class="products-section">
-    <div class="section-title">
-      <h2>User Frequency</h2>
-      <p>Based on Gender & Age Groups</p>
-      <div class="divider"></div>
+  <main class="dashboard-wrap">
+
+    <!-- Stat Cards -->
+    <div class="dash-cards">
+      <div class="dash-card">
+        <p class="dash-label">Total Users</p>
+        <p class="dash-value" id="stat-users">0</p>
+      </div>
+      <div class="dash-card">
+        <p class="dash-label">Total Invoices</p>
+        <p class="dash-value" id="stat-invoices">0</p>
+      </div>
+      <div class="dash-card">
+        <p class="dash-label">Total Revenue</p>
+        <p class="dash-value" id="stat-revenue">$0</p>
+      </div>
     </div>
 
-    <div id="user-frequency"></div>
+    <!-- Question 6a(i). Gender bar chart -->
+    <div class="dash-panel">
+      <h3 class="panel-title">Users by Gender</h3>
+      <div id="gender-chart"></div>
+    </div>
 
-  </section>
+    <!-- Question 6a(ii). Age group bar chart -->
+    <div class="dash-panel">
+      <h3 class="panel-title">Users by Age Group</h3>
+      <div id="age-chart"></div>
+    </div>
+
+    <!-- Plain-text fallback div kept hidden (script.js may still write to it) -->
+    <div id="user-frequency" style="display:none;"></div>
+
+    <!-- Question 6b. Invoice lookup — ShowInvoices() -->
+    <div class="dash-panel">
+      <h3 class="panel-title">Invoice Lookup</h3>
+      <p class="panel-sub">Search by TRN or view all &mdash; results also logged to console</p>
+      <div class="dash-search-row">
+        <input type="text" id="invoice-search-trn" placeholder="Enter TRN (000-000-000)" class="dash-input">
+        <button class="btn" style="animation:none;" onclick="searchInvoices()">Search</button>
+        <button class="btn btn-outline" style="animation:none;" onclick="searchInvoices('')">Show All</button>
+      </div>
+      <div id="invoice-results"></div>
+    </div>
+
+    <!-- Question 6c. User invoices — GetUserInvoices() -->
+    <div class="dash-panel">
+      <h3 class="panel-title">My Invoices</h3>
+      <p class="panel-sub">View all invoices stored on a specific user account</p>
+      <div class="dash-search-row">
+        <input type="text" id="user-invoice-trn" placeholder="Enter TRN (000-000-000)" class="dash-input">
+        <button class="btn" style="animation:none;" onclick="loadUserInvoices()">Get Invoices</button>
+      </div>
+      <div id="user-invoice-results"></div>
+    </div>
+
+  </main>
 
   <footer>
     <p>&copy; 2026 <span>Auriva</span> Essential Oils</p>
   </footer>
 
+  
 </body>
+</html>
 </html>
