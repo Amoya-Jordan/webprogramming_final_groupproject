@@ -36,7 +36,7 @@ The Refresh Bundle: Peppermint, Lemongrass, and Frankincense - $3,699
 
 Option A: GitHub Pages (Recommended)
 If hosted via GitHub Pages, you can access the site at:
-https://[your-username].github.io/[repository-name]/Codes/index.html
+
 
 Option B: Local Development
 Clone this repository to your machine.
