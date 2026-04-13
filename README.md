@@ -13,10 +13,10 @@ Invoice Generation: Automatically creates sequential receipts stored in localSto
 
 ## Technology Stack
 We built this project using pure vanilla technologies to demonstrate core programming competency:
-HTML5: Semantic structure and accessible forms.
-CSS3: Responsive layouts using Flexbox, CSS Grid, and custom variables.
-JavaScript (ES5): ~880 lines of custom logic for the cart, auth, and dashboard.
-localStorage: Client-side data persistence for users, cart items, and invoices.
+#HTML5: Semantic structure and accessible forms.
+#CSS3: Responsive layouts using Flexbox, CSS Grid, and custom variables.
+#JavaScript (ES5): ~880 lines of custom logic for the cart, auth, and dashboard.
+#localStorage: Client-side data persistence for users, cart items, and invoices.
 
 ## Product Catalogue
 
