@@ -106,7 +106,7 @@ function updateCart() {
     var div = document.createElement("div"); // DOM manipulation — create and inject cart item
     div.className = "cart-item";
     div.innerHTML =
-      '<img src="../Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
+      '<img src="Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
       '<div>' +
         '<h4>' + item.name + '</h4>' +
         '<p>' + (item.isBundle ? "Bundle (10% off)" : "Single Oil") + '</p>' +
@@ -320,7 +320,7 @@ function displayCartSummary() {
     var div = document.createElement("div"); // DOM manipulation — create read-only summary row
     div.className = "cart-item";
     div.innerHTML =
-      '<img src="../Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
+      '<img src="Assets/images/' + item.image + '" alt="' + item.name + '" width="80" height="80">' +
       '<div>' +
         '<h4>' + item.name + '</h4>' +
         '<p>' + (item.isBundle ? "Bundle (10% off)" : "Single Oil") + '</p>' +
