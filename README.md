@@ -43,7 +43,7 @@ Clone this repository to your machine.
 Open the folder in VS Code.
 Navigate to the Codes/ folder and right-click index.html.
 Select "Open with Live Server".
-	Note: Always run the site from within the Codes/ directory to ensure relative image 	paths function correctly.
+	Note: Always run the site from within the Codes/ directory to ensure relative image paths function correctly.
 
 ## Group Members
 
