@@ -2,8 +2,51 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+   {
     "version": "0.2.0",
     "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open index.html (Login)",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\index.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open register.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\register.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open product.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\product.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open cart.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\cart.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open checkout.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\checkout.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open invoice.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\invoice.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open dashboard.html",
+            "file": "c:\\Users\\victo\\Downloads\\webprogramming_final_groupproject-main\\dashboard.html"
+        },
         {
             "type": "chrome",
             "request": "launch",
