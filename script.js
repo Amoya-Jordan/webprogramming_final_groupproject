@@ -32,7 +32,7 @@ function displayProducts() {
     var div = document.createElement("div"); // DOM manipulation — create product card
     div.className = "product-card";
     div.innerHTML =
-      '<img class="card-img" src="../Assets/images/' + p.image + '" alt="' + p.name + '">' +
+      '<img class="card-img" src="Assets/images/' + p.image + '" alt="' + p.name + '">' +
       '<div class="card-body">' +
         '<h3>' + p.name + '</h3>' +
         '<p>' + p.description + '</p>' +
